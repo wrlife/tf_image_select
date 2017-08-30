@@ -14,6 +14,7 @@ import os
 
 flags = tf.app.flags
 flags.DEFINE_string("dataset_dir", "", "Dataset directory")
+flags.DEFINE_string("output_dir", "", "Dataset directory")
 flags.DEFINE_integer("image_height", 240, "The size of of a sample batch")
 flags.DEFINE_integer("image_width", 720, "The size of of a sample batch")
 
@@ -62,11 +63,11 @@ def main(_):
 					classification = np.squeeze(classification, [0, 1, 2])
 
 					if classification[0]>classification[1]:
-						print("The %dth frame is bad",(i))
-						os.system("cp "+img_list[i]+" ./classifiedbad/")
+						print("The %dth frame is bad" % (i))
+						os.system("cp "+img_list[i]+' '+FLAGS.output_dir+"/classifiedbad/")
 					else:
-						print("The %dth frame is good",(i))
-						os.system("cp "+img_list[i]+" ./classifiedgood/")
+						print("The %dth frame is good" % (i))
+						os.system("cp "+img_list[i]+' '+FLAGS.output_dir+"/classifiedgood/")
 
 
 
