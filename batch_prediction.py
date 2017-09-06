@@ -5,6 +5,7 @@ import random
 import numpy as np
 import PIL.Image as pil
 from glob import glob
+import time
 
 
 import tensorflow.contrib.slim.nets
@@ -15,6 +16,7 @@ import os
 flags = tf.app.flags
 flags.DEFINE_string("dataset_dir", "", "Dataset directory")
 flags.DEFINE_string("output_dir", "", "Dataset directory")
+flags.DEFINE_string("checkpoint_dir", "./checkpoints/", "Directory name to save the checkpoints")
 flags.DEFINE_integer("image_height", 240, "The size of of a sample batch")
 flags.DEFINE_integer("image_width", 720, "The size of of a sample batch")
 
@@ -23,10 +25,15 @@ FLAGS = flags.FLAGS
 slim = tf.contrib.slim
 resnet_v2 = tf.contrib.slim.nets.resnet_v2
 
+
+
 def main(_):
 
 
-
+	if not tf.gfile.Exists(FLAGS.output_dir+"/classifiedbad/"):
+		tf.gfile.MakeDirs(FLAGS.output_dir+"/classifiedbad/")
+	if not tf.gfile.Exists(FLAGS.output_dir+"/classifiedgood/"):
+		tf.gfile.MakeDirs(FLAGS.output_dir+"/classifiedgood/")
 
 	with tf.Graph().as_default():
 		#Load image and label
@@ -46,7 +53,8 @@ def main(_):
 
 			saver = tf.train.Saver([var for var in tf.model_variables()]) 
 
-			checkpoint = tf.train.latest_checkpoint(FLAGS.checkpoint_dir)
+			#import pdb;pdb.set_trace()
+			checkpoint = "/home/mimiao/project/tf_image_select/model/model.ckpt-428999"#tf.train.latest_checkpoint(FLAGS.checkpoint_dir)
 			
 			with tf.Session() as sess:
 
