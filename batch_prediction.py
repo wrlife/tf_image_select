@@ -45,14 +45,18 @@ def main(_):
 		                           #spatial_squeeze=False)
 
 			saver = tf.train.Saver([var for var in tf.model_variables()]) 
-			
+
 			checkpoint = tf.train.latest_checkpoint(FLAGS.checkpoint_dir)
 			
 			with tf.Session() as sess:
 
 				saver.restore(sess, checkpoint)
 
+				start_time = time.time()
+
 				for i in range(len(img_list)):
+
+					step_time = time.time()
 
 					fh = open(img_list[i],'r')
 					I = pil.open(fh)
@@ -70,7 +74,11 @@ def main(_):
 						print("The %dth frame is good" % (i))
 						os.system("cp "+img_list[i]+' '+FLAGS.output_dir+"/classifiedgood/")
 
+					print(time.time()-step_time)
 
+
+				duration = time.time() - start_time
+				print(duration)
 
 if __name__ == '__main__':
    tf.app.run()
