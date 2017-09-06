@@ -20,7 +20,6 @@ flags.DEFINE_float("learning_rate", 0.00002, "Learning rate of for adam")
 flags.DEFINE_float("beta1", 0.9, "Momentum term of adam")
 flags.DEFINE_integer("batch_size", 20, "The size of of a sample batch")
 flags.DEFINE_integer("max_steps", 20000, "Maximum number of training iterations")
-flags.DEFINE_string("pretrain_weight_dir", "./pretrained", "Directory name to pretrained weights")
 flags.DEFINE_integer("validation_check", 100, "Directory name to pretrained weights")
 
 FLAGS = flags.FLAGS
@@ -80,8 +79,10 @@ def main(_):
 		    # Restore only the convolutional layers:
 			#variables_to_restore = slim.get_variables_to_restore(exclude=['resnet_v2_50/logits/weights','resnet_v2_50/logits/biases'])
 			variables_to_restore = slim.get_variables_to_restore()
-			checkpoint_path = FLAGS.pretrain_weight_dir
-			init_assign_op, init_feed_dict = slim.assign_from_checkpoint(checkpoint_path, 
+
+			checkpoint = tf.train.latest_checkpoint(FLAGS.checkpoint_dir)
+
+			init_assign_op, init_feed_dict = slim.assign_from_checkpoint(checkpoint, 
 																		 variables_to_restore)
 
 

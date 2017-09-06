@@ -45,11 +45,12 @@ def main(_):
 		                           #spatial_squeeze=False)
 
 			saver = tf.train.Saver([var for var in tf.model_variables()]) 
-
-			ckpt_file = '/home/wrlife/project/deeplearning/tf_image_select/checkpoints/model.ckpt-240741'
+			
+			checkpoint = tf.train.latest_checkpoint(FLAGS.checkpoint_dir)
+			
 			with tf.Session() as sess:
 
-				saver.restore(sess, ckpt_file)
+				saver.restore(sess, checkpoint)
 
 				for i in range(len(img_list)):
 
